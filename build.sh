@@ -8,7 +8,7 @@ generate=0
 upload=0
 buildx=0
 setup_buildx=0
-dockerhub_username=${dockerhub_username:-joyqi}
+dockerhub_username=${dockerhub_username:-kmzs123}
 
 display_usage_and_exit() {
   echo "Usage: $(basename "$0") [-g] [-u] [-x] [-s] [-v <typecho version>] [-p <php version>] [-o <os>] <type>" >&2
@@ -70,6 +70,8 @@ fi
 
 if [ ${version} == "dev" ]; then
     URL="dev"
+elif [ ${version} == "latest" ]; then
+    URL="https://github.com/typecho/typecho/releases/latest/download/typecho.zip"
 elif [ ${version} != "nightly" ]; then
     URL="https://github.com/typecho/typecho/releases/download/v${version}/typecho.zip"
 fi
@@ -120,11 +122,12 @@ if [ ${generate} -eq 0 ]; then
     
     rm -rf Dockerfile
 else
-    echo "TAG=${TAG}" >> $GITHUB_OUTPUT
-    echo "URL=${URL}" >> $GITHUB_OUTPUT
-    echo "CONFIG=${CONFIG}" >> $GITHUB_OUTPUT
-    echo "PLATFORM=${PLATFORM}" >> $GITHUB_OUTPUT
-    echo "PHP8_SOCKETS_WORKAROUND=${PHP8_SOCKETS_WORKAROUND}" >> $GITHUB_OUTPUT
-    echo "PHP_EXTENSION=${PHP_EXTENSION}" >> $GITHUB_OUTPUT
-    echo "VERSION=${dockerhub_username}/typecho:${version}-php${TAG}" >> $GITHUB_OUTPUT
+    rm /root/Docker-compose/Typecho/args
+    echo "TAG=${TAG}" >> /root/Docker-compose/Typecho/args
+    echo "URL=${URL}" >> /root/Docker-compose/Typecho/args
+    echo "CONFIG=${CONFIG}" >> /root/Docker-compose/Typecho/args
+    echo "PLATFORM=${PLATFORM}" >> /root/Docker-compose/Typecho/args
+    echo "PHP8_SOCKETS_WORKAROUND=${PHP8_SOCKETS_WORKAROUND}" >> /root/Docker-compose/Typecho/args
+    echo "PHP_EXTENSION=${PHP_EXTENSION}" >> /root/Docker-compose/Typecho/args
+    echo "VERSION=${dockerhub_username}/typecho:${version}-php${TAG}" >> /root/Docker-compose/Typecho/args
 fi
